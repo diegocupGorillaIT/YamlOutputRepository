@@ -1,0 +1,137 @@
+openapi: 3.0.1
+info:
+  title: OrmApi
+  version: '1.0'
+servers:
+  - url: http://127.0.0.1:4010/
+paths:
+  /Gebruiker:
+    get:
+      description: Returns all objects of type 'Gebruiker' from the system that the user has access to
+      responses:
+        '200':
+          description: A paged array of type 'Gebruiker'
+          headers:
+            x-next:
+              description: A link to the next page of responses of type 'Gebruiker'
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOfGebruiker'
+    post:
+      description: Create an object of type 'Gebruiker'
+      operationId: createGebruikerById
+      requestBody:
+        description: Body of object 'Gebruiker'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Gebruiker'
+        required: true
+      responses:
+        '201':
+          description: Null response
+  '/Gebruiker/{GebruikerId}':
+    get:
+      description: Returns information of specific object of type 'Gebruiker' from the system
+      operationId: showGebruikerById
+      parameters:
+        - name: GebruikerId
+          in: path
+          description: The id of the Gebruiker to be retrieved
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Gebruiker'
+  /Bedrijf:
+    get:
+      description: Returns all objects of type 'Bedrijf' from the system that the user has access to
+      responses:
+        '200':
+          description: A paged array of type 'Bedrijf'
+          headers:
+            x-next:
+              description: A link to the next page of responses of type 'Bedrijf'
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListOfBedrijf'
+    post:
+      description: Create an object of type 'Bedrijf'
+      operationId: createBedrijfById
+      requestBody:
+        description: Body of object 'Bedrijf'
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Bedrijf'
+        required: true
+      responses:
+        '201':
+          description: Null response
+  '/Bedrijf/{BedrijfId}':
+    get:
+      description: Returns information of specific object of type 'Bedrijf' from the system
+      operationId: showBedrijfById
+      parameters:
+        - name: BedrijfId
+          in: path
+          description: The id of the Bedrijf to be retrieved
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Bedrijf'
+components:
+  schemas:
+    Gebruiker:
+      required:
+        - GebruikerHasGebruiker_id
+        - GebruikerHeeftNaam
+        - GebruikerHeeftTelefoonnummer
+      type: object
+      properties:
+        GebruikerHasGebruiker_id:
+          type: integer
+        GebruikerHeeftNaam:
+          type: string
+        GebruikerHeeftTelefoonnummer:
+          type: string
+        GebruikerHeeftBedrijf_Bedrijf:
+          $ref: '#/components/schemas/Bedrijf'
+    ListOfGebruiker:
+      type: array
+      items:
+        $ref: '#/components/schemas/Gebruiker'
+    Bedrijf:
+      required:
+        - BedrijfHasBedrijf_id
+        - BedrijfHeeftBedrijfsnaam
+        - BedrijfHeeftAantalWerknemers
+      type: object
+      properties:
+        BedrijfHasBedrijf_id:
+          type: integer
+        BedrijfHeeftBedrijfsnaam:
+          type: string
+        BedrijfHeeftAantalWerknemers:
+          type: integer
+    ListOfBedrijf:
+      type: array
+      items:
+        $ref: '#/components/schemas/Bedrijf'
